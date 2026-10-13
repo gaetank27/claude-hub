@@ -1,0 +1,17 @@
+{
+  "name": "Claude Hub",
+  "short_name": "Hub",
+  "description": "Claude Code orchestration hub",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#d4886a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

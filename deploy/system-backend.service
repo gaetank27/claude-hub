@@ -1,0 +1,37 @@
+# systemd --user unit for the system hub backend.
+# Install: cp to ~/.config/systemd/user/ then `systemctl --user enable --now system-backend`
+# Enable survival across logout: `loginctl enable-linger $USER`
+#
+# The backend is restartable at will: live sessions run in their own transient
+# units (system-session-<id>.service) and are unaffected by a backend restart.
+
+[Unit]
+Description=system hub backend (Claude Code orchestration)
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/claude/projects/system
+ExecStart=/home/claude/projects/system/bin/backend
+# Bind: loopback if nginx is co-located, or the LAN IP if nginx runs on another
+# host and proxies in. With in-process OIDC the auth check runs on every request
+# regardless of bind, so the LAN IP is NOT an auth bypass; and the Secure session
+# cookie means a direct plain-HTTP LAN hit cannot establish a session anyway.
+Environment=SYSTEM_LISTEN=127.0.0.1:8787
+#
+# OIDC auth (PocketID). Auth is off until SYSTEM_OIDC_ISSUER is set; when set,
+# CLIENT_ID, REDIRECT_URL and SESSION_SECRET are required (the backend refuses to
+# start otherwise). SESSION_SECRET signs the session cookie and must stay stable
+# across restarts. Keep secrets in a drop-in (chmod 600), not this tracked file —
+# e.g. ~/.config/systemd/user/system-backend.service.d/auth.conf:
+# Environment=SYSTEM_OIDC_ISSUER=https://id.example.com
+# Environment=SYSTEM_OIDC_CLIENT_ID=claude-hub
+# Environment=SYSTEM_OIDC_CLIENT_SECRET=...
+# Environment=SYSTEM_OIDC_REDIRECT_URL=https://hub.example.com/auth/callback
+# Environment=SYSTEM_AUTH_ALLOWED_EMAILS=admin@example.com
+# Environment=SYSTEM_SESSION_SECRET=...
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

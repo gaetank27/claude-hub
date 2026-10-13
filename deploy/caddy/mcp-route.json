@@ -1,0 +1,6 @@
+{"match":[{"host":["mcp.example.com"]}],"terminal":true,"handle":[{"handler":"subroute","routes":[
+ {"match":[{"path":["/mcp","/oauth/authorize","/oauth/token","/oauth/register","/.well-known/oauth-protected-resource","/.well-known/oauth-protected-resource/mcp","/.well-known/oauth-authorization-server"],"remote_ip":{"ranges":["192.0.2.11/32"]}}],"terminal":true,"handle":[
+  {"handler":"headers","response":{"set":{"Strict-Transport-Security":["max-age=31536000"],"X-Content-Type-Options":["nosniff"],"Cache-Control":["no-store"],"Referrer-Policy":["no-referrer"]},"deferred":true}},
+  {"handler":"request_body","max_size":262144},
+  {"handler":"reverse_proxy","upstreams":[{"dial":"127.0.0.1:8787"}],"headers":{"request":{"set":{"X-Forwarded-For":["{http.request.header.X-Real-IP}"],"X-Forwarded-Proto":["https"]},"delete":["X-Real-IP"]}}}]},
+ {"handle":[{"handler":"static_response","status_code":404}]}]}]}

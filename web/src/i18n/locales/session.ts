@@ -1,0 +1,202 @@
+// In-session UI: prompt composer, plan/question panels, transcript stream,
+// context/usage indicators and desktop handback notifications.
+export const session = {
+  en: {
+    // Composer — attachments
+    fileAttachUnavailable: "File attachment unavailable here",
+    uploadFailed: "File upload failed",
+    unsupportedFormat: "Unsupported format: {{type}} (png, jpeg, gif, webp)",
+    unknownType: "unknown",
+    imageTooLarge: "Image too large (max {{max}} MB)",
+    tooManyInlineAttachments: "Too many inline attachments (total size exceeded)",
+    imageReadFailed: "Could not read image",
+    attachedFilesInProject: "[Files attached in the project: {{list}}]",
+    imageAlt: "attachment",
+    removeImage: "Remove image",
+    removeDocument: "Remove document",
+    removeFile: "Remove file",
+    uploading: "uploading…",
+    // Composer — input row
+    waitingForConnection: "Waiting for connection…",
+    messagePlaceholder: "Message to Claude Code…",
+    attachFiles: "Attach files",
+    attachFilesTitle: "Attach files (pdf, zip, tgz…)",
+    stopDictation: "Stop dictation",
+    dictateMessage: "Dictate a message",
+    send: "Send",
+
+    // PlanPanel
+    planProposed: "Proposed plan",
+    planApproved: "✓ Plan approved — autonomous execution",
+    planRejected: "✗ Plan rejected",
+    planApproving: "Approving…",
+    approveAndExecute: "Approve and execute",
+    reject: "Reject",
+
+    // QuestionPanel
+    question: "Question",
+    otherAnswer: "Other answer…",
+    answerSent: "✓ Answer sent",
+
+    // SessionStream
+    claudeThinking: "▌ Claude is thinking…",
+    jumpToLatest: "Jump to latest message",
+    sessionEndedReadOnly: "session ended · read-only",
+    sessionStarted: "session started",
+    toolResultError: "✕ result (error)",
+    toolResult: "↳ result",
+    turnError: "turn errored",
+    turnDone: "turn done",
+    turnUsage: " · in {{input}} / out {{output}} tok",
+    turnCost: " · ~${{cost}}",
+    usageTotalsTitle: "Session total · last-step context",
+    usageTotals: "Σ in {{input}} / out {{output}} tok · ~${{cost}}",
+    usageContext: " · ctx {{context}}",
+    statusConnected: "connected",
+    statusConnecting: "connecting…",
+    statusReconnecting: "reconnecting…",
+
+    // ContextStatusIndicator
+    contextResourcesTitle:
+      "Hub infrastructure resources injected into the context of this project's sessions",
+    contextLabel: "⚙️ Context:",
+
+    // ClaudeUsage
+    rangeHour: "Hour",
+    rangeDay: "Day",
+    rangeWeek: "Week",
+    rangeMonth: "Month",
+    usageHeading: "Claude — usage",
+    historyUnavailable: "History unavailable (rrdtool not installed, or no data yet).",
+    tokensIn: "Input tokens",
+    tokensOut: "Output tokens",
+    estimatedCost: "Estimated cost",
+    panelTokens: "Tokens",
+    panelTokensHint: "input / output per bucket",
+    seriesInput: "input",
+    seriesOutput: "output",
+    panelActiveSessions: "Active sessions",
+    panelActiveSessionsHint: "average per bucket",
+    seriesActive: "active",
+    panelCost: "Estimated cost",
+    panelCostHint: "$ per bucket",
+    seriesCost: "cost",
+    panelPlanLimits: "Plan limits",
+    panelPlanLimitsHint: "% of windows (per account)",
+    noPlanData: "No plan data sampled over this period.",
+    planSession5h: "Session 5h",
+    planWeekly: "Weekly",
+    planOpus: "Opus",
+
+    // UsageBar
+    resetImminent: "resets soon",
+    resetIn: "resets in {{value}}",
+    resetAt: "resets {{day}} {{time}}",
+    usageBarSession: "Session",
+    usageBarWeekly: "Weekly",
+    usageBarOpus: "Opus / week",
+    usageBarStaleTitle: "Last known reading (live measurement momentarily unavailable)",
+
+    // useHandbackNotifications
+    sessionNeedsAttention: "A session needs attention.",
+  },
+  fr: {
+    // Composer — attachments
+    fileAttachUnavailable: "Pièce jointe fichier indisponible ici",
+    uploadFailed: "Échec de l'upload des fichiers",
+    unsupportedFormat: "Format non supporté : {{type}} (png, jpeg, gif, webp)",
+    unknownType: "inconnu",
+    imageTooLarge: "Image trop lourde (max {{max}} Mo)",
+    tooManyInlineAttachments: "Trop de pièces jointes inline (taille totale dépassée)",
+    imageReadFailed: "Lecture de l'image impossible",
+    attachedFilesInProject: "[Fichiers joints dans le projet : {{list}}]",
+    imageAlt: "pièce jointe",
+    removeImage: "Retirer l'image",
+    removeDocument: "Retirer le document",
+    removeFile: "Retirer le fichier",
+    uploading: "envoi…",
+    // Composer — input row
+    waitingForConnection: "En attente de connexion…",
+    messagePlaceholder: "Message à Claude Code…",
+    attachFiles: "Joindre des fichiers",
+    attachFilesTitle: "Joindre des fichiers (pdf, zip, tgz…)",
+    stopDictation: "Arrêter la dictée",
+    dictateMessage: "Dicter un message",
+    send: "Envoyer",
+
+    // PlanPanel
+    planProposed: "Plan proposé",
+    planApproved: "✓ Plan validé — exécution autonome",
+    planRejected: "✗ Plan refusé",
+    planApproving: "Validation…",
+    approveAndExecute: "Valider et exécuter",
+    reject: "Refuser",
+
+    // QuestionPanel
+    question: "Question",
+    otherAnswer: "Autre réponse…",
+    answerSent: "✓ Réponse envoyée",
+
+    // SessionStream
+    claudeThinking: "▌ Claude réfléchit…",
+    jumpToLatest: "Aller au dernier message",
+    sessionEndedReadOnly: "session terminée · lecture seule",
+    sessionStarted: "session démarrée",
+    toolResultError: "✕ résultat (erreur)",
+    toolResult: "↳ résultat",
+    turnError: "turn en erreur",
+    turnDone: "turn terminé",
+    turnUsage: " · in {{input}} / out {{output}} tok",
+    turnCost: " · ~${{cost}}",
+    usageTotalsTitle: "Cumul de la session · contexte de la dernière étape",
+    usageTotals: "Σ in {{input}} / out {{output}} tok · ~${{cost}}",
+    usageContext: " · ctx {{context}}",
+    statusConnected: "connecté",
+    statusConnecting: "connexion…",
+    statusReconnecting: "reconnexion…",
+
+    // ContextStatusIndicator
+    contextResourcesTitle:
+      "Ressources de l'infrastructure Hub injectées dans le contexte des sessions de ce projet",
+    contextLabel: "⚙️ Contexte :",
+
+    // ClaudeUsage
+    rangeHour: "Heure",
+    rangeDay: "Jour",
+    rangeWeek: "Semaine",
+    rangeMonth: "Mois",
+    usageHeading: "Claude — utilisation",
+    historyUnavailable: "Historique indisponible (rrdtool non installé, ou pas encore de données).",
+    tokensIn: "Tokens entrée",
+    tokensOut: "Tokens sortie",
+    estimatedCost: "Coût estimé",
+    panelTokens: "Tokens",
+    panelTokensHint: "entrée / sortie par bucket",
+    seriesInput: "entrée",
+    seriesOutput: "sortie",
+    panelActiveSessions: "Sessions actives",
+    panelActiveSessionsHint: "moyenne par bucket",
+    seriesActive: "actives",
+    panelCost: "Coût estimé",
+    panelCostHint: "$ par bucket",
+    seriesCost: "coût",
+    panelPlanLimits: "Limites du plan",
+    panelPlanLimitsHint: "% des fenêtres (par compte)",
+    noPlanData: "Pas de données de plan échantillonnées sur cette période.",
+    planSession5h: "Session 5h",
+    planWeekly: "Hebdo",
+    planOpus: "Opus",
+
+    // UsageBar
+    resetImminent: "réinit. imminente",
+    resetIn: "réinit. {{value}}",
+    resetAt: "réinit. {{day}} {{time}}",
+    usageBarSession: "Session",
+    usageBarWeekly: "Hebdo",
+    usageBarOpus: "Opus / sem.",
+    usageBarStaleTitle: "Dernier relevé connu (mesure en direct momentanément indisponible)",
+
+    // useHandbackNotifications
+    sessionNeedsAttention: "Une session attend une intervention.",
+  },
+};

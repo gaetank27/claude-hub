@@ -1,0 +1,17 @@
+# systemd --user unit for Proton Bridge (headless). Installed by install.sh, which
+# fills @HERE@ (this directory). Bridge serves IMAP on 127.0.0.1:1143 and SMTP on
+# 127.0.0.1:1025 only; nothing is exposed on the network.
+[Unit]
+Description=Proton Mail Bridge (headless)
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c '. @HERE@/env.sh && exec "$PB_BIN" --noninteractive'
+Restart=always
+RestartSec=10
+# Bridge keeps its vault credentials in `pass`; give it a bounded memory footprint.
+MemoryMax=1G
+
+[Install]
+WantedBy=default.target

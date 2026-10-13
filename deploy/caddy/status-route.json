@@ -1,0 +1,10 @@
+{"match":[{"host":["status.example.com"]}],"terminal":true,"handle":[{"handler":"subroute","routes":[
+ {"match":[{"method":["POST"],"path_regexp":{"pattern":"^/webhook/script-status/[a-z0-9][a-z0-9_-]{0,47}/image$"},"remote_ip":{"ranges":["192.0.2.11/32"]}}],"terminal":true,"handle":[
+  {"handler":"headers","response":{"set":{"Strict-Transport-Security":["max-age=31536000"],"X-Content-Type-Options":["nosniff"],"Cache-Control":["no-store"],"Referrer-Policy":["no-referrer"],"Content-Security-Policy":["default-src 'none'"]},"deferred":true}},
+  {"handler":"request_body","max_size":1048576},
+  {"handler":"reverse_proxy","upstreams":[{"dial":"127.0.0.1:8787"}],"headers":{"request":{"set":{"X-Forwarded-For":["{http.request.header.X-Real-IP}"]},"delete":["X-Real-IP"]}}}]},
+ {"match":[{"method":["POST"],"path":["/webhook/script-status/*"],"remote_ip":{"ranges":["192.0.2.11/32"]}}],"terminal":true,"handle":[
+  {"handler":"headers","response":{"set":{"Strict-Transport-Security":["max-age=31536000"],"X-Content-Type-Options":["nosniff"],"Cache-Control":["no-store"],"Referrer-Policy":["no-referrer"],"Content-Security-Policy":["default-src 'none'"]},"deferred":true}},
+  {"handler":"request_body","max_size":65536},
+  {"handler":"reverse_proxy","upstreams":[{"dial":"127.0.0.1:8787"}],"headers":{"request":{"set":{"X-Forwarded-For":["{http.request.header.X-Real-IP}"]},"delete":["X-Real-IP"]}}}]},
+ {"handle":[{"handler":"static_response","status_code":404}]}]}]}

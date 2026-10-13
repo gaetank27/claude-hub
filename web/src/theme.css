@@ -1,0 +1,369 @@
+@import "tailwindcss";
+
+/* Design tokens — exposed as Tailwind utilities (bg-bg, text-accent…). The
+   `:root` block is the default palette (Midnight); each `html[data-theme=…]`
+   block below overrides the same variables, so switching the attribute reskins
+   the whole app. Tailwind v4 emits utilities as `var(--color-*)` references, so
+   these overrides cascade everywhere without rebuilding. */
+@theme {
+  --color-bg: #0b0e14;
+  --color-panel: #11151f;
+  --color-panel-2: #161b27;
+  --color-border: #1f2738;
+  --color-fg: #e4e9f2;
+  --color-muted: #7c8aa5;
+  --color-accent: #2de2c0;
+  --color-accent-dim: #16b89b;
+  --color-danger: #ff7a3c;
+  --color-ok: #4ade80;
+  /* Ring colour for keyboard focus; tracks the active theme's accent. */
+  --color-ring: var(--color-accent);
+
+  /* Typography — additive only. We keep Tailwind's built-in xs..2xl ladder to
+     avoid a global reflow, and add two smaller steps so the ad-hoc text-[10px]
+     and text-[11px] sprinkled across the app collapse onto named utilities
+     (text-3xs / text-2xs). */
+  --text-3xs: 0.625rem;
+  --text-3xs--line-height: 0.9rem;
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  /* Radius — intent-named, replaces the random rounded / rounded-lg mix.
+     rounded-control = buttons/inputs/chips, rounded-card = cards/panels/modals. */
+  --radius-control: 0.5rem;
+  --radius-card: 0.75rem;
+  --radius-pill: 9999px;
+
+  /* Spacing — semantic seams so density stays consistent and tunable in one
+     place. The numeric scale (p-2, gap-4…) is untouched (derived from the base
+     multiplier); these add p-page / gap-section / etc. */
+  --spacing-page: 2rem;
+  --spacing-page-sm: 1rem;
+  --spacing-card: 1rem;
+  --spacing-card-sm: 0.75rem;
+  --spacing-section: 1.5rem;
+
+  /* Elevation — borders remain the resting cue (they track --color-border and
+     stay legible on every theme). Shadows are reserved for *floating* surfaces
+     (modals, popovers, FABs). Utilities cannot take a colour var, so a fixed
+     low-alpha black is the pragmatic choice; at these alphas it reads fine even
+     on the light themes. */
+  --shadow-pop: 0 4px 16px -2px rgb(0 0 0 / 0.35), 0 2px 6px -2px rgb(0 0 0 / 0.25);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.20);
+}
+
+/* Midnight — explicit so the picker can re-select the default. */
+html[data-theme="midnight"] {
+  --color-bg: #0b0e14;
+  --color-panel: #11151f;
+  --color-panel-2: #161b27;
+  --color-border: #1f2738;
+  --color-fg: #e4e9f2;
+  --color-muted: #7c8aa5;
+  --color-accent: #2de2c0;
+  --color-accent-dim: #16b89b;
+  --color-danger: #ff7a3c;
+  --color-ok: #4ade80;
+}
+
+/* Nord — cool slate with an icy blue accent. */
+html[data-theme="nord"] {
+  --color-bg: #2e3440;
+  --color-panel: #323a49;
+  --color-panel-2: #3b4252;
+  --color-border: #434c5e;
+  --color-fg: #eceff4;
+  --color-muted: #9aa6bd;
+  --color-accent: #88c0d0;
+  --color-accent-dim: #5e93a3;
+  --color-danger: #bf616a;
+  --color-ok: #a3be8c;
+}
+
+/* Ember — warm charcoal with an orange accent. */
+html[data-theme="ember"] {
+  --color-bg: #14100d;
+  --color-panel: #1d1813;
+  --color-panel-2: #261f18;
+  --color-border: #3a2f25;
+  --color-fg: #f2e9e1;
+  --color-muted: #a8957f;
+  --color-accent: #ff8c42;
+  --color-accent-dim: #d96f2c;
+  --color-danger: #ef4444;
+  --color-ok: #84cc16;
+}
+
+/* Slate — neutral gray with a calm blue accent. */
+html[data-theme="slate"] {
+  --color-bg: #0f1115;
+  --color-panel: #171a21;
+  --color-panel-2: #1d212b;
+  --color-border: #2a3039;
+  --color-fg: #e6e9ef;
+  --color-muted: #8b94a3;
+  --color-accent: #6ea8fe;
+  --color-accent-dim: #4d86e0;
+  --color-danger: #f87171;
+  --color-ok: #4ade80;
+}
+
+/* Daylight — light theme for bright environments. */
+html[data-theme="light"] {
+  --color-bg: #f5f7fa;
+  --color-panel: #ffffff;
+  --color-panel-2: #eef2f7;
+  --color-border: #d7dee8;
+  --color-fg: #1a2230;
+  --color-muted: #5b6675;
+  --color-accent: #0ea5e9;
+  --color-accent-dim: #0284c7;
+  --color-danger: #e0532f;
+  --color-ok: #16a34a;
+}
+
+/* Dracula — the classic purple/pink dark palette. */
+html[data-theme="dracula"] {
+  --color-bg: #282a36;
+  --color-panel: #2d2f3b;
+  --color-panel-2: #343746;
+  --color-border: #44475a;
+  --color-fg: #f8f8f2;
+  --color-muted: #6272a4;
+  --color-accent: #bd93f9;
+  --color-accent-dim: #9d6fe0;
+  --color-danger: #ff5555;
+  --color-ok: #50fa7b;
+}
+
+/* Solarized — Ethan Schoonover's dark base with cyan accent. */
+html[data-theme="solarized"] {
+  --color-bg: #002b36;
+  --color-panel: #073642;
+  --color-panel-2: #0a4453;
+  --color-border: #134e5a;
+  --color-fg: #e6dfc8;
+  --color-muted: #6b8189;
+  --color-accent: #2aa198;
+  --color-accent-dim: #1f7a73;
+  --color-danger: #dc322f;
+  --color-ok: #859900;
+}
+
+/* Rosé — muted rose on deep aubergine (Rosé Pine inspired). */
+html[data-theme="rose"] {
+  --color-bg: #191724;
+  --color-panel: #1f1d2e;
+  --color-panel-2: #26233a;
+  --color-border: #403d52;
+  --color-fg: #e0def4;
+  --color-muted: #908caa;
+  --color-accent: #ebbcba;
+  --color-accent-dim: #d7827e;
+  --color-danger: #eb6f92;
+  --color-ok: #9ccfd8;
+}
+
+/* Forest — deep green with a fresh leaf accent. */
+html[data-theme="forest"] {
+  --color-bg: #0b130f;
+  --color-panel: #122019;
+  --color-panel-2: #18291f;
+  --color-border: #24382c;
+  --color-fg: #dceae0;
+  --color-muted: #7fa08a;
+  --color-accent: #4ade80;
+  --color-accent-dim: #2fb45f;
+  --color-danger: #f87171;
+  --color-ok: #facc15;
+}
+
+/* OLED — true black for AMOLED screens, high-contrast cyan accent. */
+html[data-theme="oled"] {
+  --color-bg: #000000;
+  --color-panel: #0a0a0a;
+  --color-panel-2: #141414;
+  --color-border: #262626;
+  --color-fg: #f4f4f5;
+  --color-muted: #8a8a8a;
+  --color-accent: #22d3ee;
+  --color-accent-dim: #0891b2;
+  --color-danger: #f87171;
+  --color-ok: #4ade80;
+}
+
+/* Grape — deep indigo with a violet accent. */
+html[data-theme="grape"] {
+  --color-bg: #13111f;
+  --color-panel: #1b1830;
+  --color-panel-2: #241f3d;
+  --color-border: #352f54;
+  --color-fg: #e9e6f5;
+  --color-muted: #8e87b0;
+  --color-accent: #a78bfa;
+  --color-accent-dim: #7c5fe0;
+  --color-danger: #fb7185;
+  --color-ok: #34d399;
+}
+
+/* Sand — warm light theme, easy on the eyes in daylight. */
+html[data-theme="sand"] {
+  --color-bg: #f7f3ec;
+  --color-panel: #fffdf8;
+  --color-panel-2: #efe8db;
+  --color-border: #ddd2bf;
+  --color-fg: #2a2420;
+  --color-muted: #6b6051;
+  --color-accent: #c2702f;
+  --color-accent-dim: #a85b22;
+  --color-danger: #d04a2f;
+  --color-ok: #5a8f3c;
+}
+
+/* Matrix — black CRT terminal with phosphor-green text (the classic "green on
+   black" look). bg is true black; fg itself is green so all body copy glows. */
+html[data-theme="matrix"] {
+  --color-bg: #000000;
+  --color-panel: #0a140a;
+  --color-panel-2: #0f1e0f;
+  --color-border: #1d3a1d;
+  --color-fg: #33ff66;
+  --color-muted: #2f8f4a;
+  --color-accent: #00ff41;
+  --color-accent-dim: #00b82f;
+  --color-danger: #ff5555;
+  --color-ok: #7cfc00;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Paint the canvas itself with the theme background. Without this, html has no
+   background and the area the browser reveals when the mobile keyboard opens (or
+   on overscroll) flashes the UA default white — the layout looks like it "goes
+   blank" while typing. Keeping it on html means it covers any space outside #root. */
+html {
+  background: var(--color-bg);
+}
+
+/* Use the dynamic viewport unit so the app fills the screen on mobile without
+   being clipped by the browser's collapsing address bar (the classic 100vh bug). */
+#root {
+  height: 100dvh;
+}
+
+/* Mobile: lock the layout to the viewport width and forbid horizontal scroll.
+   Scoped to the md breakpoint so desktop is untouched (on desktop a 100vw width
+   plus a permanent scrollbar would introduce a slight overflow). box-sizing is
+   already border-box globally via the Tailwind v4 preflight. */
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* iOS Safari auto-zooms the page when a focused form control has a font-size
+     below 16px. That zoom makes the layout wider than the visual viewport, which
+     shoves everything left and clips the right edge (the send button reads
+     "Envo", the tab bar "Suiv" is cut off) when the keyboard opens. Forcing a
+     16px minimum on text inputs suppresses the zoom entirely — the canonical fix
+     that, unlike maximum-scale, keeps pinch-zoom working. `!important` is needed
+     to outrank Tailwind's text-sm utility (class specificity > element rule). */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Print (used by cmd/docgen to compile the PDF manual from /aide?print). The app
+   shell pins height to the viewport and scrolls internally, which would clip the
+   manual to a single page. Release the height/overflow lock so the content flows
+   naturally across paginated pages; chrome is hidden via Tailwind `print:hidden`
+   on the shell. */
+@media print {
+  html,
+  body,
+  #root {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* Kill the grey tap flash and the rubber-band scroll on touch devices. */
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+/* Smooth, momentum scrolling for every scrollable pane on iOS. */
+.overflow-auto,
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keyboard focus affordance, app-wide. Components use `outline-none` on inputs,
+   which strips the native ring for *every* input method; :focus-visible restores
+   it for keyboard users only (mouse/touch clicks don't trigger it), so the look
+   is unchanged for pointer users. One rule covers every interactive element. */
+:where(a, button, [role="button"], input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}
+
+/* Soft cross-fade of theme colors when the palette switches. Scoped to color
+   properties (not transform/opacity) and disabled under reduced-motion. Tailwind
+   utility transitions (`transition-colors`) outrank this, so hover states keep
+   their own timing; this only covers elements that would otherwise jump. */
+@media (prefers-reduced-motion: no-preference) {
+  *,
+  ::before,
+  ::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 0.25s;
+    transition-timing-function: ease;
+  }
+}
+
+/* Monospace transcript blocks */
+.mono {
+  font-family: ui-monospace, "JetBrains Mono", "Fira Code", monospace;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}

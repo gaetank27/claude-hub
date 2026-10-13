@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- interactive-widget=resizes-content shrinks the layout viewport (and 100dvh)
+         when the virtual keyboard opens, so the chat composer stays above it instead
+         of being hidden behind it on mobile. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#d4886a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Claude Hub" />
+    <title>Claude Hub</title>
+    <!-- Apply the saved color theme before first paint to avoid a flash of the
+         default palette. Mirrors lib/theme.ts (key). An unknown id simply has no
+         matching CSS block and falls back to the default palette, so a loose
+         [a-z] check is enough and avoids hard-coding the theme list here. -->
+    <script>
+      try {
+        var t = localStorage.getItem("claudehub.theme");
+        if (t && /^[a-z]+$/.test(t)) document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
